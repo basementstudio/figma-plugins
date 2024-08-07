@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = (env, argv) => ({
@@ -9,7 +11,7 @@ module.exports = (env, argv) => ({
   devtool: argv.mode === 'production' ? false : 'inline-source-map',
 
   entry: {
-    ui: './src/app/index.tsx', // The entry point for your UI code
+    ui: './src/app/app.tsx', // The entry point for your UI code
     code: './src/plugin/controller.ts', // The entry point for your plugin code
   },
 
@@ -21,13 +23,34 @@ module.exports = (env, argv) => ({
       // Enables including CSS by doing "import './file.css'" in your TypeScript code
       { test: /\.css$/, use: ['style-loader', { loader: 'css-loader' }] },
 
+      {
+        test: /\.scss$/,
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              sourceMap: true,
+            },
+          },
+          {
+            loader: require.resolve('sass-loader'),
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+        sideEffects: true,
+      },
+
       // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
       { test: /\.(png|jpg|gif|webp|svg)$/, loader: 'url-loader' },
     ],
   },
 
   // Webpack tries these extensions for you if you omit the extension like "import './file'"
-  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js'] },
+  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'] },
 
   output: {
     filename: '[name].js',
@@ -41,6 +64,10 @@ module.exports = (env, argv) => ({
       filename: 'ui.html',
       chunks: ['ui'],
       cache: false,
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[id].[contenthash].css',
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/ui/]),
   ],
