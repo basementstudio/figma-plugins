@@ -9,8 +9,8 @@ import EmptySelectionMessage from "../../components/empty-selection-message";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export default function ReplaceForVariablesPage({
-  colorsWithUses,
-  variables,
+  colorsWithUses = [],
+  variables = [],
   onReplaceAll,
 }: {
   colorsWithUses: ColorWithUses[];
@@ -24,7 +24,7 @@ export default function ReplaceForVariablesPage({
     easing: "ease-in-out",
   });
 
-  const colorsGroups: ReplaceGroup[] = getReplaceGroups(colorsWithUses, amount);
+  const colorsGroups: ReplaceGroup[] = getReplaceGroups(colorsWithUses || [], amount);
 
   return (
     <ScrollablePageWrapper

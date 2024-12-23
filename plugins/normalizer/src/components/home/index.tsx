@@ -4,17 +4,14 @@ import { TooltipProvider } from "../ui/tooltip";
 import { ReplaceGroup } from "../../types/colors";
 
 export const Home = () => {
-  const [colorsWithUses, setColorsWithUses] = useState([]);
-  const [variables, setVariables] = useState([]);
+  const [props, setProps] = useState({});
 
   onmessage = async (event: MessageEvent) => {
     const pluginMessage = event.data.pluginMessage;
+    const { type, ...rest } = pluginMessage;
 
-    if (pluginMessage.type === "selection-change") {
-      const colorsWithUses = pluginMessage.colorsWithUses;
-      const variables = pluginMessage.variables;
-      setColorsWithUses(colorsWithUses || []);
-      setVariables(variables || []);
+    if (type === "selection-change") {
+      setProps({ ...rest });
     }
   };
 
@@ -46,8 +43,7 @@ export const Home = () => {
   return (
     <TooltipProvider>
       <Main
-        colorsWithUses={colorsWithUses}
-        variables={variables}
+        {...props}
         onColorReplace={handleColorReplace}
         onReplaceAll={handleReplaceAll}
       />

@@ -1,5 +1,6 @@
 import ColorsPage from "../../pages/colors-page";
 import CommingSoonPage from "../../pages/comming-soon-page";
+import FontsPage from "../../pages/fonts-page";
 import ReplaceForVariablesPage from "../../pages/replace-for-variables-page";
 import Icon from "../ui/icon";
 
@@ -23,6 +24,6 @@ export const ITEMS = [
     id: "fonts",
     label: "Fonts",
     icon: Icon.Fonts,
-    component: CommingSoonPage,
+    component: FontsPage,
   },
 ];

@@ -1,27 +1,35 @@
+import { TextStyleWithUses } from "./types/texts";
+import { colorsToColorsWithUses, getColors } from "./utils/getters/colors";
 import {
-  colorsToColorsWithUses,
-  getColors,
-  getVariables,
-  replaceAll,
-  replaceColor,
-} from "./utils/getters";
+  getTextStyles,
+  textStylesToStylesWithUses,
+} from "./utils/getters/fonts";
+import { getVariables } from "./utils/getters/variables";
+import { replaceAll, replaceColor } from "./utils/setters/colors";
 
 figma.showUI(__html__, { height: 600, width: 350 });
 
 const onSelectionChange = async (): Promise<void> => {
   const selectedComponents: readonly SceneNode[] = figma.currentPage.selection;
-  const collections = figma.variables.getLocalVariableCollections();
+  const collections = figma.variables.getLocalVariableCollections() || [];
+  const variables = getVariables(collections) || [];
+
+  const textStyles = figma.getLocalTextStyles() || [];
 
   const colorsWithUses = await Promise.all(selectedComponents.map(getColors))
     .then((colors) => colorsToColorsWithUses(colors.flat()))
     .catch(() => []);
 
-  const variables = getVariables(collections);
+  const textWithUses = await Promise.all(selectedComponents.map(getTextStyles))
+    .then((styles) => textStylesToStylesWithUses(styles.flat()))
+    .catch(() => []);
 
   figma.ui.postMessage({
     type: "selection-change",
-    colorsWithUses,
     variables,
+    textStyles,
+    colorsWithUses,
+    textWithUses,
   });
 };
 

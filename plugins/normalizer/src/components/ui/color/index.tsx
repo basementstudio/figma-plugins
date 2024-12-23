@@ -1,6 +1,7 @@
 import cn from "classnames";
 import { rgbToHex } from "../../../utils/colors";
 import { ColorWithUses } from "../../../types/colors";
+import UsesTag from "../uses-tag";
 
 const getColorName = (color: ColorWithUses, variables: Variable[]) => {
   const variable = variables.find((v) => v.id === color.variable?.id);
@@ -51,13 +52,7 @@ export default function Color({
       </div>
 
       {color?.uses?.length > 0 && (
-        <span className="text-[10px] leading-none uppercase min-w-fit py-0.5 px-1 border border-gray-400/20 rounded bg-gray-200 text-gray-700 tracking-tight">
-          {options.timesSmall
-            ? color.uses.length > 99
-              ? `99+`
-              : color.uses.length
-            : color.uses.length + " times"}
-        </span>
+        <UsesTag uses={color.uses.length} timesSmall={options.timesSmall} />
       )}
     </div>
   );
