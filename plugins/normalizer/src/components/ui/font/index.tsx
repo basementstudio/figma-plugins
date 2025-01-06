@@ -11,7 +11,7 @@ export default function Font({ text }: { text: TextStyleWithUses }) {
       )}
     >
       <div
-        className="h-6 min-w-6 w-6 rounded border border-gray-200/50 bg-gray-50 flex flex-row justify-center items-center overflow-hidden leading-none text-sm text-gray-800"
+        className="h-6 min-w-6 w-6 rounded border border-gray-200/50 flex flex-row justify-center items-center overflow-hidden leading-none text-sm text-gray-800"
         style={{
           fontFamily: `${text.fontName.family}, Geist, sans-serif`,
           fontWeight: text.fontName.style === "Bold" ? "bold" : "normal",
