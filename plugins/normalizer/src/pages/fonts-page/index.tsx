@@ -4,7 +4,6 @@ import WebFont from "webfontloader";
 import ScrollablePageWrapper from "../scrollable-page-wrapper";
 import EmptySelectionMessage from "../../components/empty-selection-message";
 import { TextStyleWithUses } from "../../types/texts";
-import { cn } from "../../utils/cn";
 import Font from "../../components/ui/font";
 
 export default function FontsPage({
@@ -28,23 +27,6 @@ export default function FontsPage({
     WebFont.load({
       google: {
         families: uniqueFonts,
-      },
-      active: () => {
-        // Opcional: Callback cuando las fuentes están cargadas
-        console.log(`Fuentes cargadas`);
-      },
-      inactive: () => {
-        console.log(`Fuentes no cargadas`);
-      },
-      // quiero loguear los errores
-      fontloading: (family) => {
-        console.log(`Loading: ${family}`);
-      },
-      fontactive: (family) => {
-        console.log(`Fuentes cargadas: ${family}`);
-      },
-      fontinactive: (family) => {
-        console.log(`Fuentes no cargadas: ${family}`);
       },
     });
   }, [textWithUses]);
