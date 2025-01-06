@@ -34,8 +34,6 @@ export default function ColorsPage({
         {colorsWithUses.sort(sortColorsByUsageAndVariables).map((color) => (
           <div key={getColorKey(color) + "-container"} className="w-full">
             <ReplaceDropdown
-              title={`Replace color with:`}
-              emptyMessage={`No colors available to replace.`}
               trigger={
                 <Color
                   key={getColorKey(color)}

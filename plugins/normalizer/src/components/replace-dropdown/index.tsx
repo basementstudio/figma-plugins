@@ -11,8 +11,6 @@ interface ReplaceDropdownProps {
   trigger: ReactNode;
   items: DropdownMenuItem[];
   className?: string;
-  title?: string;
-  emptyMessage?: string;
 }
 
 export default function ReplaceDropdown({
