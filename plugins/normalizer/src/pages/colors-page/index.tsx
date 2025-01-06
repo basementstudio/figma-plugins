@@ -5,6 +5,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import ScrollablePageWrapper from "../scrollable-page-wrapper";
 import EmptySelectionMessage from "../../components/empty-selection-message";
 import ReplaceDropdown from "../../components/replace-dropdown";
+import { sortColorsByUsageAndVariables } from "../../utils/sorting";
 
 export default function ColorsPage({
   colorsWithUses,
@@ -31,12 +32,7 @@ export default function ColorsPage({
         className="w-full h-fit gap-2 flex flex-col justify-start items-center"
       >
         {colorsWithUses
-          ?.sort((a, b) => {
-            if (b.uses?.length !== a.uses?.length)
-              return b.uses?.length - a.uses?.length;
-
-            return b?.variable ? 1 : a?.variable ? -1 : 0;
-          })
+          ?.sort(sortColorsByUsageAndVariables)
           .map((color) => (
             <div key={getColorKey(color) + "-container"} className="w-full">
               <ReplaceDropdown

@@ -5,7 +5,7 @@ import {
   textStylesToStylesWithUses,
 } from "./utils/getters/fonts";
 import { getVariables } from "./utils/getters/variables";
-import { replaceAll, replaceColor } from "./utils/setters/colors";
+import { replaceAll, replaceColor, replaceText } from "./utils/setters/colors";
 
 figma.showUI(__html__, { height: 600, width: 350 });
 
@@ -39,6 +39,12 @@ figma.on("run", onSelectionChange);
 figma.ui.onmessage = async (message) => {
   if (message.type === "replace-color") {
     replaceColor(message.originalColor, message.newColor);
+
+    return onSelectionChange();
+  }
+
+  if (message.type === "replace-text") {
+    replaceText(message.originalFont, message.newFont);
 
     return onSelectionChange();
   }

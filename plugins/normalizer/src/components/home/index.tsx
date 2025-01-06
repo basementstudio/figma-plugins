@@ -28,6 +28,21 @@ export const Home = () => {
     );
   };
 
+  const handleTextReplace = (originalFont: any, newFont: any) => {
+    console.log("handleTextReplace", originalFont, newFont);
+
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "replace-text",
+          originalFont,
+          newFont,
+        },
+      },
+      "*"
+    );
+  };
+
   const handleReplaceAll = (colorsGroups: ReplaceGroup[]) => {
     parent.postMessage(
       {
@@ -45,6 +60,7 @@ export const Home = () => {
       <Main
         {...props}
         onColorReplace={handleColorReplace}
+        onTextReplace={handleTextReplace}
         onReplaceAll={handleReplaceAll}
       />
     </TooltipProvider>
