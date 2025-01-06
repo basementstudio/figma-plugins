@@ -13,6 +13,7 @@ export const ITEMS = [
   },
   {
     divider: true,
+    id: "divider-1",
   },
   {
     id: "colors",

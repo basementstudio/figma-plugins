@@ -25,17 +25,17 @@ export default function ColorsPage({
 
   return (
     <ScrollablePageWrapper title="Colors">
-      <EmptySelectionMessage show={colorsWithUses.length === 0} />
+      <EmptySelectionMessage show={colorsWithUses?.length === 0} />
       <div
         ref={parent}
         className="w-full h-fit gap-2 flex flex-col justify-start items-center"
       >
         {colorsWithUses
-          .sort((a, b) => {
-            if (b.uses.length !== a.uses.length)
-              return b.uses.length - a.uses.length;
+          ?.sort((a, b) => {
+            if (b.uses?.length !== a.uses?.length)
+              return b.uses?.length - a.uses?.length;
 
-            return b.variable ? 1 : a.variable ? -1 : 0;
+            return b?.variable ? 1 : a?.variable ? -1 : 0;
           })
           .map((color) => (
             <div key={getColorKey(color) + "-container"} className="w-full">
