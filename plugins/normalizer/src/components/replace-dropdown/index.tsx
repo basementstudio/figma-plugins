@@ -10,7 +10,6 @@ interface DropdownMenuItem {
 interface ReplaceDropdownProps {
   trigger: ReactNode;
   items: DropdownMenuItem[];
-  className?: string;
   title?: string;
   emptyMessage?: string;
   rootKey?: string;
@@ -19,7 +18,6 @@ interface ReplaceDropdownProps {
 export default function ReplaceDropdown({
   trigger,
   items,
-  className = "w-60 max-h-40 flex flex-col justify-start items-start gap-1 overflow-y-scroll bg-neutral-50 rounded-sm p-1 border border-neutral-200/50",
   title = "Replace for:",
   emptyMessage = "No items available",
   rootKey,
@@ -30,11 +28,13 @@ export default function ReplaceDropdown({
         {trigger}
       </DropdownMenu.Trigger>
 
-      <DropdownMenu.Content className={className} sideOffset={2}>
+      <DropdownMenu.Content
+        className="w-60 max-h-40 flex flex-col justify-start items-start gap-1 overflow-y-scroll bg-neutral-50 rounded-sm p-1 border border-neutral-200/50 shadow-md shadow-gray-200/50 
+        data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+        sideOffset={2}
+      >
         <div className="w-full px-2 mt-2 pb-1 text-sm text-neutral-500">
-          <span className="text-xs leading-none text-gray-500">
-            {title}
-          </span>
+          <span className="text-xs leading-none text-gray-500">{title}</span>
         </div>
         {items.length === 0 ? (
           <div className="w-full p-2">
