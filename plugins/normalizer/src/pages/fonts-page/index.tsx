@@ -36,12 +36,12 @@ export default function FontsPage({
 
   return (
     <ScrollablePageWrapper title="Fonts">
-      <EmptySelectionMessage show={textWithUses.length === 0} />
+      <EmptySelectionMessage show={textWithUses?.length === 0} />
       <div
         ref={parent}
         className="w-full h-fit gap-2 flex flex-col justify-start items-center"
       >
-        {textWithUses.map((text) => (
+        {textWithUses?.map((text) => (
           <div key={text.id + "-container"} className="w-full">
             <ReplaceDropdown
               title={`Replace font with:`}

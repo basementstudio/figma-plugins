@@ -55,14 +55,33 @@ export function replaceColor(color: ColorWithUses, newColor: ColorWithUses) {
   });
 }
 
-export function replaceText(
+export async function replaceText(
   originalText: TextStyleWithUses,
   newText: TextStyleWithUses
 ) {
-  originalText.uses.forEach((use) => {
+  for (const use of originalText.uses) {
     const node = figma.getNodeById(use.nodeId);
 
     if (node && "fontName" in node) {
+      // Check for missing fonts
+      if (node.hasMissingFont) {
+        console.warn(`Node ${node.id} has missing fonts. Skipping...`);
+        continue;
+      }
+
+      // Load all necessary fonts before modifying text properties
+      try {
+        await Promise.all(
+          node.getRangeAllFontNames(0, node.characters.length)
+            .map(figma.loadFontAsync)
+        );
+        // Also load the new font we want to apply
+        await figma.loadFontAsync(newText.fontName);
+      } catch (error) {
+        console.error(`Failed to load fonts for node ${node.id}:`, error);
+        continue;
+      }
+
       const textProperties = {
         fontName: newText.fontName,
         fontSize: newText.fontSize,
@@ -87,12 +106,12 @@ export function replaceText(
       };
 
       Object.entries(textProperties).forEach(([key, value]) => {
-        if (key in node) {
+        if (key in node && value !== undefined) {
           node[key] = value;
         }
       });
     }
-  });
+  }
 }
 
 export function replaceAll(colorsGroups: ReplaceGroup[]) {
