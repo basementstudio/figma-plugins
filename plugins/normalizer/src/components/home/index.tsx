@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Main } from "../main";
 import { TooltipProvider } from "../ui/tooltip";
-import { ReplaceGroup } from "../../types/colors";
+import { ReplaceColorGroup } from "../../types/colors";
 
 export const Home = () => {
   const [props, setProps] = useState({});
@@ -43,7 +43,7 @@ export const Home = () => {
     );
   };
 
-  const handleReplaceAll = (colorsGroups: ReplaceGroup[]) => {
+  const handleReplaceAll = (colorsGroups: ReplaceColorGroup[]) => {
     parent.postMessage(
       {
         pluginMessage: {

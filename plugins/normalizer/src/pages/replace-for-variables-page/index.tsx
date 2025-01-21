@@ -1,40 +1,88 @@
 import { useState } from "react";
-import { ColorWithUses, ReplaceGroup } from "../../types/colors";
+import {
+  ColorWithUses,
+  ReplaceColorGroup,
+  ReplaceTextGroup,
+} from "../../types/colors";
 import ScrollablePageWrapper from "../scrollable-page-wrapper";
-import { getReplaceGroups } from "./utils";
+import { getReplaceColorGroups, getReplaceTextGroups } from "./utils";
 import Color from "../../components/ui/color";
 import { cn } from "../../utils/cn";
 import Icon from "../../components/ui/icon";
 import EmptySelectionMessage from "../../components/empty-selection-message";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import SettingModal from "./components/setting-modal";
+import { TextStyleWithUses } from "../../types/texts";
+import Font from "../../components/ui/font";
+
+export interface Config {
+  colorThreshold: number;
+  replaceFont: boolean;
+  replaceSize: boolean;
+  sizeThreshold: number;
+  replaceLineHeight: boolean;
+  lineHeightThreshold: number;
+  replaceLetterSpacing: boolean;
+  letterSpacingThreshold: number;
+  replaceTextCase: boolean;
+  replaceTextDecoration: boolean;
+  replaceTextAlignHorizontal: boolean;
+  replaceTextAlignVertical: boolean;
+  replaceParagraphSpacing: boolean;
+  replaceParagraphIndent: boolean;
+}
 
 export default function ReplaceForVariablesPage({
   colorsWithUses = [],
+  textWithUses = [],
   variables = [],
   onReplaceAll,
 }: {
   colorsWithUses: ColorWithUses[];
+  textWithUses: TextStyleWithUses[];
   variables: Variable[];
-  onReplaceAll: (colorsGroups: ReplaceGroup[]) => void;
+  onReplaceAll: (colorsGroups: ReplaceColorGroup[]) => void;
 }) {
-  const [amount, setAmount] = useState(7);
+  const [config, setConfig] = useState<Config>({
+    colorThreshold: 7,
+    replaceFont: true,
+    replaceSize: false,
+    sizeThreshold: 2,
+    replaceLineHeight: false,
+    replaceLetterSpacing: false,
+    replaceTextCase: false,
+    replaceTextDecoration: false,
+    replaceTextAlignHorizontal: false,
+    replaceTextAlignVertical: false,
+    replaceParagraphSpacing: false,
+    replaceParagraphIndent: false,
+  });
+
+  const { threshold } = config;
 
   const [parent] = useAutoAnimate({
     duration: 150,
     easing: "ease-in-out",
   });
 
-  const colorsGroups: ReplaceGroup[] = getReplaceGroups(colorsWithUses || [], amount);
+  const colorsGroups: ReplaceColorGroup[] = getReplaceColorGroups(
+    colorsWithUses || [],
+    threshold
+  );
+
+  const textGroups: ReplaceTextGroup[] = getReplaceTextGroups(
+    textWithUses || [],
+    config
+  );
+
+  console.log("textGroups", textGroups);
 
   return (
     <ScrollablePageWrapper
       title="Replace for variables"
       rightComponent={
         <div className="w-full flex flex-row justify-end items-center gap-2">
-          <div className="w-fit flex flex-row items-center gap-1 text-[10px] bg-gray-100 px-1.5 h-6 rounded-md border border-gray-200/50">
-            <span>Threshold:</span>
-            <span className="font-semibold">{amount}%</span>
-          </div>
+          <SettingModal setConfig={setConfig} config={config} />
         </div>
       }
       bottomComponent={
@@ -123,6 +171,17 @@ export default function ReplaceForVariablesPage({
                 }}
               />
             </div>
+          </div>
+        ))}
+        
+        {textGroups?.map((group) => (
+          <div
+            key={group.to.id + "replace-group"}
+            className="flex flex-row justify-start items-start gap-0 w-full"
+          >
+            {group.from.map((f) => (
+              <Font text={f} />
+            ))}
           </div>
         ))}
       </div>

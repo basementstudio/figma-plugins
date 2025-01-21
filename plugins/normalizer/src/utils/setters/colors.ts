@@ -1,4 +1,4 @@
-import { ColorWithUses, ReplaceGroup } from "../../types/colors";
+import { ColorWithUses, ReplaceColorGroup } from "../../types/colors";
 import { TextStyleWithUses } from "../../types/texts";
 import { clone } from "../clone";
 import { rgbToHex } from "../colors";
@@ -114,7 +114,7 @@ export async function replaceText(
   }
 }
 
-export function replaceAll(colorsGroups: ReplaceGroup[]) {
+export function replaceAll(colorsGroups: ReplaceColorGroup[]) {
   colorsGroups.forEach((group) => {
     group.from.forEach((color) => {
       replaceColor(color, group.to);
