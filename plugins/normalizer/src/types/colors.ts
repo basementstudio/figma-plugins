@@ -1,3 +1,5 @@
+import { TextStyleWithUses } from "./texts";
+
 export interface RGB {
   r: number;
   g: number;
@@ -52,7 +54,12 @@ export interface ColorUse {
   property: "fills" | "strokes";
 }
 
-export interface ReplaceGroup {
+export interface ReplaceColorGroup {
   from: ColorWithUses[];
   to: ColorWithUses;
+}
+
+export interface ReplaceTextGroup {
+  from: TextStyleWithUses[];
+  to: TextStyleWithUses;
 }

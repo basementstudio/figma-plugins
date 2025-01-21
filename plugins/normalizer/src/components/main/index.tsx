@@ -12,7 +12,7 @@ const SidebarItem = ({
   label: string;
 }) => {
   return (
-    <Tooltip>
+    <Tooltip key={value}>
       <TooltipTrigger asChild>
         <div>
           <TabsTrigger
@@ -33,7 +33,7 @@ const SidebarItem = ({
 export const Main = (props: any) => {
   return (
     <Tabs
-      defaultValue={ITEMS[0].id}
+      defaultValue={ITEMS[2].id}
       className="w-full h-full flex flex-row max-h-[600px]"
     >
       <div className="w-fit h-full bg-gray-100 border-r border-gray-200/50 max-h-[600px]">
@@ -41,7 +41,7 @@ export const Main = (props: any) => {
           <TabsList className="flex flex-col gap-2 bg-transparent">
             {ITEMS.map((item) =>
               item.divider ? (
-                <div className="w-full h-[1px] bg-gray-300 rounded" />
+                <div className="w-full h-[1px] bg-gray-300 rounded" key={item.id} />
               ) : (
                 <SidebarItem
                   icon={item.icon}
@@ -62,7 +62,7 @@ export const Main = (props: any) => {
             className="w-full h-full"
           >
             {item.component && typeof item.component === "function" ? (
-              <item.component {...props} />
+              <item.component {...props} key={item.id} />
             ) : null}
           </TabsContent>
         ))}

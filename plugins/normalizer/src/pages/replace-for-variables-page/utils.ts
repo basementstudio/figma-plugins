@@ -1,4 +1,10 @@
-import { ColorWithUses, ReplaceGroup } from "../../types/colors";
+import { Config } from ".";
+import {
+  ColorWithUses,
+  ReplaceColorGroup,
+  ReplaceTextGroup,
+} from "../../types/colors";
+import { TextStyleWithUses } from "../../types/texts";
 
 const getColorDistance = (color1: ColorWithUses, color2: ColorWithUses) => {
   const r1 = color1.r / 255;
@@ -19,13 +25,13 @@ const getColorDistance = (color1: ColorWithUses, color2: ColorWithUses) => {
   );
 };
 
-const totalUses = (color: ReplaceGroup) => {
+const totalUses = (color: ReplaceColorGroup) => {
   return (
     color.to.uses.length + color.from.reduce((acc, c) => acc + c.uses.length, 0)
   );
 };
 
-export function getReplaceGroups(
+export function getReplaceColorGroups(
   colorsWithUses: ColorWithUses[],
   amount: number
 ) {
@@ -45,7 +51,7 @@ export function getReplaceGroups(
     return acc;
   }, [] as ColorWithUses[][]);
 
-  const replaceGroups = groups.map((group) => {
+  const ReplaceColorGroups = groups.map((group) => {
     const sortedGroup = [...group].sort((a, b) => {
       if (a.variable?.id && !b.variable?.id) return -1;
       if (!a.variable?.id && b.variable?.id) return 1;
@@ -60,7 +66,115 @@ export function getReplaceGroups(
     };
   });
 
-  return replaceGroups
-    .sort((a, b) => totalUses(b) - totalUses(a))
-    .filter((group) => group.from.length > 1);
+  return ReplaceColorGroups.sort((a, b) => totalUses(b) - totalUses(a)).filter(
+    (group) => group.from.length > 1
+  );
+}
+
+const isSameObject = (object1: any, object2: any) => {
+  return JSON.stringify(object1) === JSON.stringify(object2);
+};
+
+const textStylesAreSameGroup = (
+  textStyle1: TextStyleWithUses,
+  textStyle2: TextStyleWithUses,
+  config: Config
+) => {
+  const isSameFont =
+    textStyle1.fontName.family === textStyle2.fontName.family &&
+    textStyle1.fontName.style === textStyle2.fontName.style;
+
+  if (!(config.replaceFont || isSameFont)) {
+    return false;
+  }
+
+  const isSameSize =
+    Math.abs(textStyle1.fontSize - textStyle2.fontSize) < config.sizeThreshold;
+
+  if (!(config.replaceSize || isSameSize)) {
+    return false;
+  }
+
+  const isSameLetterSpacing = isSameObject(
+    textStyle1.letterSpacing,
+    textStyle2.letterSpacing
+  );
+
+  if (!(config.replaceLetterSpacing || isSameLetterSpacing)) {
+    return false;
+  }
+
+  const isSameTextCase = textStyle1.textCase === textStyle2.textCase;
+
+  if (!(config.replaceTextCase || isSameTextCase)) {
+    return false;
+  }
+
+  const isSameTextDecoration =
+    textStyle1.textDecoration === textStyle2.textDecoration;
+
+  if (!(config.replaceTextDecoration || isSameTextDecoration)) {
+    return false;
+  }
+
+  const isSameTextAlignHorizontal =
+    textStyle1.textAlignHorizontal === textStyle2.textAlignHorizontal;
+
+  if (!(config.replaceTextAlignHorizontal || isSameTextAlignHorizontal)) {
+    return false;
+  }
+
+  const isSameTextAlignVertical =
+    textStyle1.textAlignVertical === textStyle2.textAlignVertical;
+
+  if (!(config.replaceTextAlignVertical || isSameTextAlignVertical)) {
+    return false;
+  }
+
+  const isSameParagraphSpacing =
+    textStyle1.paragraphSpacing === textStyle2.paragraphSpacing;
+
+  if (!(config.replaceParagraphSpacing || isSameParagraphSpacing)) {
+    return false;
+  }
+
+  const isSameParagraphIndent =
+    textStyle1.paragraphIndent === textStyle2.paragraphIndent;
+
+  if (!(config.replaceParagraphIndent || isSameParagraphIndent)) {
+    return false;
+  }
+
+  return true;
+};
+
+export function getReplaceTextGroups(
+  textWithUses: TextStyleWithUses[],
+  config: Config
+): ReplaceTextGroup[] {
+  const groups: ReplaceTextGroup[] = [];
+  const processed = new Set<string>();
+
+  for (const textStyle of textWithUses) {
+    if (processed.has(textStyle.id)) continue;
+
+    const similarStyles = textWithUses.filter(
+      (t) => !processed.has(t.id) && textStylesAreSameGroup(t, textStyle, config)
+    );
+
+    if (similarStyles.length > 1) {
+      const mostUsed = similarStyles.reduce((prev, current) =>
+        current.uses > prev.uses ? current : prev
+      );
+
+      groups.push({
+        from: similarStyles.filter((style) => style.id !== mostUsed.id),
+        to: mostUsed,
+      });
+
+      similarStyles.forEach((style) => processed.add(style.id));
+    }
+  }
+
+  return groups;
 }
