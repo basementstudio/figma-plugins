@@ -2,7 +2,16 @@ import { TextStyleWithUses } from "../../../types/texts";
 import { cn } from "../../../utils/cn";
 import UsesTag from "../uses-tag";
 
-export default function Font({ text }: { text: TextStyleWithUses }) {
+export default function Font({
+  text,
+  options,
+}: {
+  text: TextStyleWithUses;
+  options: {
+    timesSmall: boolean;
+    hideDetails: boolean;
+  };
+}) {
   return (
     <div
       key={text.id}
@@ -23,13 +32,14 @@ export default function Font({ text }: { text: TextStyleWithUses }) {
       <span className="text-xs leading-none text-gray-950 text-ellipsis max-w-full overflow-hidden max-h-3 w-full text-left whitespace-nowrap">
         {text.fontName.family} - {text.fontName.style}
       </span>
-      <span className="text-xs leading-none text-gray-500">
-        {(Number.isInteger(text.fontSize)
-          ? text.fontSize
-          : text.fontSize.toFixed(2)) + "px"}
-      </span>
-      
-      <UsesTag uses={text.uses.length} timesSmall={false} />
+      {!options?.hideDetails && (
+        <span className="text-xs leading-none text-gray-500">
+          {(Number.isInteger(text.fontSize)
+            ? text.fontSize
+            : text.fontSize.toFixed(2)) + "px"}
+        </span>
+      )}
+      <UsesTag uses={text.uses.length} timesSmall={options?.timesSmall} />
     </div>
   );
 }

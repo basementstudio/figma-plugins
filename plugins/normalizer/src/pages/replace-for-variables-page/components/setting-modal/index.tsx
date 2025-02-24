@@ -27,8 +27,15 @@ export function SettingSection({
   });
 
   return (
-    <div className="flex flex-col gap-3" ref={parent} key={field.sectionTitle + "section"}>
-      <h2 className="text-sm font-semibold leading-none tracking-tight" key={field.sectionTitle}>
+    <div
+      className="flex flex-col gap-3"
+      ref={parent}
+      key={field.sectionTitle + "section"}
+    >
+      <h2
+        className="text-sm font-semibold leading-none tracking-tight"
+        key={field.sectionTitle}
+      >
         {field.sectionTitle}
       </h2>
 
@@ -64,6 +71,13 @@ export default function SettingModal({
       </DialogTrigger>
 
       <DialogContent className="gap-4">
+        <DialogHeader className="sr-only">
+          <DialogTitle className="sr-only">Replace for variables</DialogTitle>
+          <DialogDescription className="sr-only">
+            Replace text styles with variables
+          </DialogDescription>
+        </DialogHeader>
+
         {FIELDS.map((field) => (
           <SettingSection field={field} config={config} setConfig={setConfig} />
         ))}

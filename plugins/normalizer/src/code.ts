@@ -46,12 +46,12 @@ figma.ui.onmessage = async (message) => {
   if (message.type === "replace-text") {
     replaceText(message.originalFont, message.newFont);
 
-    return onSelectionChange();
+    return setTimeout(onSelectionChange, 1000);
   }
 
   if (message.type === "replace-all") {
-    replaceAll(message.colorsGroups);
+    replaceAll(message.colorsGroups, message.textGroups);
 
-    return onSelectionChange();
+    return setTimeout(onSelectionChange, 1000);
   }
 };

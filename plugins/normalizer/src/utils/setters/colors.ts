@@ -1,4 +1,4 @@
-import { ColorWithUses, ReplaceColorGroup } from "../../types/colors";
+import { ColorWithUses, ReplaceColorGroup, ReplaceTextGroup } from "../../types/colors";
 import { TextStyleWithUses } from "../../types/texts";
 import { clone } from "../clone";
 import { rgbToHex } from "../colors";
@@ -114,10 +114,16 @@ export async function replaceText(
   }
 }
 
-export function replaceAll(colorsGroups: ReplaceColorGroup[]) {
+export function replaceAll(colorsGroups: ReplaceColorGroup[], textGroups: ReplaceTextGroup[]) {
   colorsGroups.forEach((group) => {
     group.from.forEach((color) => {
       replaceColor(color, group.to);
+    });
+  });
+
+  textGroups.forEach((group) => {
+    group.from.forEach((text) => {
+      replaceText(text, group.to);
     });
   });
 }

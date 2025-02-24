@@ -35,8 +35,11 @@ export function getReplaceColorGroups(
   colorsWithUses: ColorWithUses[],
   amount: number
 ) {
+  console.log(amount);
   const threshold = amount / 100;
 
+  console.log({ threshold });
+  
   const groups: ColorWithUses[][] = colorsWithUses.reduce((acc, color) => {
     const groupIndex = acc.findIndex((group) =>
       group.some((c) => getColorDistance(c, color) <= threshold)
@@ -67,7 +70,7 @@ export function getReplaceColorGroups(
   });
 
   return ReplaceColorGroups.sort((a, b) => totalUses(b) - totalUses(a)).filter(
-    (group) => group.from.length > 1
+    (group) => group.from.length > 0
   );
 }
 
@@ -159,7 +162,8 @@ export function getReplaceTextGroups(
     if (processed.has(textStyle.id)) continue;
 
     const similarStyles = textWithUses.filter(
-      (t) => !processed.has(t.id) && textStylesAreSameGroup(t, textStyle, config)
+      (t) =>
+        !processed.has(t.id) && textStylesAreSameGroup(t, textStyle, config)
     );
 
     if (similarStyles.length > 1) {
