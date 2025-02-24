@@ -29,8 +29,6 @@ export const Home = () => {
   };
 
   const handleTextReplace = (originalFont: any, newFont: any) => {
-    console.log("handleTextReplace", originalFont, newFont);
-
     parent.postMessage(
       {
         pluginMessage: {
@@ -43,7 +41,10 @@ export const Home = () => {
     );
   };
 
-  const handleReplaceAll = (colorsGroups: ReplaceColorGroup[], textGroups: ReplaceTextGroup[]) => {
+  const handleReplaceAll = (
+    colorsGroups: ReplaceColorGroup[],
+    textGroups: ReplaceTextGroup[]
+  ) => {
     parent.postMessage(
       {
         pluginMessage: {

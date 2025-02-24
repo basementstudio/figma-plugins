@@ -35,11 +35,8 @@ export function getReplaceColorGroups(
   colorsWithUses: ColorWithUses[],
   amount: number
 ) {
-  console.log(amount);
   const threshold = amount / 100;
 
-  console.log({ threshold });
-  
   const groups: ColorWithUses[][] = colorsWithUses.reduce((acc, color) => {
     const groupIndex = acc.findIndex((group) =>
       group.some((c) => getColorDistance(c, color) <= threshold)
