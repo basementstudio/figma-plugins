@@ -27,15 +27,8 @@ export function SettingSection({
   });
 
   return (
-    <div
-      className="flex flex-col gap-3"
-      ref={parent}
-      key={field.sectionTitle + "section"}
-    >
-      <h2
-        className="text-sm font-semibold leading-none tracking-tight"
-        key={field.sectionTitle}
-      >
+    <div className="flex flex-col gap-3" ref={parent}>
+      <h2 className="text-sm font-semibold leading-none tracking-tight">
         {field.sectionTitle}
       </h2>
 
@@ -64,10 +57,10 @@ export default function SettingModal({
 }) {
   return (
     <Dialog>
-      <DialogTrigger>
-        <button className="w-fit flex flex-row items-center gap-1 text-[10px] bg-gray-100 p-1 rounded-md border border-gray-200/50 hover:bg-gray-200 transition-all duration-100">
+      <DialogTrigger asChild>
+        <div className="w-fit flex flex-row items-center gap-1 text-[10px] bg-gray-100 p-1 rounded-md border border-gray-200/50 hover:bg-gray-200 transition-all duration-100 cursor-pointer">
           <Icon.Settings className="w-4 h-4" color="#292929" />
-        </button>
+        </div>
       </DialogTrigger>
 
       <DialogContent className="gap-4">
@@ -79,7 +72,12 @@ export default function SettingModal({
         </DialogHeader>
 
         {FIELDS.map((field) => (
-          <SettingSection field={field} config={config} setConfig={setConfig} />
+          <SettingSection
+            key={field.sectionTitle}
+            field={field}
+            config={config}
+            setConfig={setConfig}
+          />
         ))}
       </DialogContent>
     </Dialog>

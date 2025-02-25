@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "My Figma plugin built with Typescript, React and TailwindCSS.",
   "license": "MIT",
-  "scripts": {
+    "scripts": {
     "build": "webpack --mode=production --define-process-env-node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --define-process-env-node-env=production",
@@ -65,6 +65,9 @@
     "editorType": [
       "figma"
     ],
-    "ui": "./ui.html"
+    "networkAccess": { "allowedDomains": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"] },
+    "ui": "./ui.html",
+    "id": "1476231557597220067",
+    "documentAccess": "dynamic-page"
   }
 }

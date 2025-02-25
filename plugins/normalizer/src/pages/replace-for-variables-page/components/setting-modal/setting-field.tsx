@@ -20,7 +20,7 @@ export function SettingField({ field, config, setConfig }: FieldProps) {
   switch (field.type) {
     case "slider":
       return (
-        <div className="flex flex-col gap-2" key={field.key}>
+        <div className="flex flex-col gap-2" key={field.key + "slider"}>
           <Label className="text-sm text-gray-800 leading-none tracking-tight">
             {field.label}
           </Label>
@@ -50,7 +50,7 @@ export function SettingField({ field, config, setConfig }: FieldProps) {
 
     case "switch":
       return (
-        <div className="flex flex-row items-center gap-2" key={field.key}>
+        <div className="flex flex-row items-center gap-2" key={field.key + "switch"}>
           <Switch
             checked={config[field.key]}
             onCheckedChange={(checked) =>

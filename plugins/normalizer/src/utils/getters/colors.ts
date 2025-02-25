@@ -12,6 +12,7 @@ export async function getColors(node: SceneNode): Promise<Array<ColorUse>> {
 export function colorsToColorsWithUses(
   colors: ColorUse[]
 ): Array<ColorWithUses> {
+  console.log("colorsToColorsWithUses", colors);
   return colors.reduce((acc, color) => {
     const existingColor = acc.find((c) => {
       return c.id === color.id;
